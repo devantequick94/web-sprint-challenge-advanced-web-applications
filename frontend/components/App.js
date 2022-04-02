@@ -70,16 +70,16 @@ export default function App() {
     setSpinnerOn(true)
 
     axiosWithAuth().get(articlesUrl)
-    .then(res => {
-      setArticles(res.data.articles)
-      setMessage(res.data.message)
-      setSpinnerOn(false)
-    })
-    .catch(err => {
-      console.error(err)
-      setSpinnerOn(false)
-      navigate('/')
-    })
+      .then(res => {
+        setArticles(res.data.articles)
+        setMessage(res.data.message)
+        setSpinnerOn(false)
+      })
+      .catch(err => {
+        console.error(err)
+        setSpinnerOn(false)
+        navigate('/')
+      })
   }
 
   const postArticle = article => {
@@ -95,16 +95,16 @@ export default function App() {
         setArticles([ ...articles, res.data.article ])
         setMessage(res.data.message)
         setSpinnerOn(false)
-    })
-    .catch(err => {
-      console.log(err)
-    })
+      })
+      .catch(err => {
+        console.error(err)
+      })
   }
 
   const putArticle = article => {
     console.log('clock')
     const { article_id, ...changes } = article
-    axiosWithAuth().put(`${articlesUrl}/${article_id}`,changes)
+    axiosWithAuth().put(`${articlesUrl}/${article_id}`, changes)
       .then(res => {
         setArticles(articles.map(art => {
           return art.article_id === article_id ? res.data.article : art
@@ -124,20 +124,20 @@ export default function App() {
     console.log("click")
   }
 
-
+  
 
   const deleteArticle = article_id => {
     // ✨ implement
     axiosWithAuth().delete(`${articlesUrl}/${article_id}`)
-    .then(res => {
-      setMessage(res.data.message)
-      setArticles(articles.filter(art => {
-        return art.article_id !== article_id
-      }))
-    })
-    .catch(err => {
-      setMessage(err?.response?.data?.message)
-    })
+      .then(res => {
+        setMessage(res.data.message)
+        setArticles(articles.filter(art => {
+          return art.article_id !== article_id
+        }))
+      })
+      .catch(err => {
+        setMessage(err?.response?.data?.message)
+      })
   }
 
   const onSubmit = article => {
@@ -164,15 +164,15 @@ export default function App() {
           <Route path="/" element={<LoginForm login={login} />} />
           <Route path="articles" element={
             <>
-              <ArticleForm 
-              onSubmit={onSubmit}
-              currentArticle={articles.find(art => art.article_id === currentArticleId)}
+              <ArticleForm
+                onSubmit={onSubmit}
+                currentArticle={articles.find(art => art.article_id === currentArticleId)}
               />
               <Articles
-              articles={articles}
-              getArticles={getArticles}
-              updateArticle={updateArticle}
-              deleteArticle={deleteArticle} 
+                articles={articles}
+                getArticles={getArticles}
+                updateArticle={updateArticle}
+                deleteArticle={deleteArticle}
               />
             </>
           } />
